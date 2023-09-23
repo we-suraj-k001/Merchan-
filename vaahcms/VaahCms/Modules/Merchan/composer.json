@@ -1,0 +1,28 @@
+{
+    "name": "vaahcms/merchan",
+    "description": "This will contain various cruds like customer and channel",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "vaah",
+            "email": "support@vaah.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VaahCms\\Modules\\Merchan\\Providers\\MerchanServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "VaahCms\\Modules\\Merchan\\": ""
+        }
+    }
+}
