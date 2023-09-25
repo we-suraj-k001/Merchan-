@@ -1,12 +1,12 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
-import { useCustomerStore } from '../../stores/store-customers'
+import { useChannelStore } from '../../stores/store-channels'
 
 import VhField from './../../vaahvue/vue-three/primeflex/VhField.vue'
 import {useRoute} from 'vue-router';
 
 
-const store = useCustomerStore();
+const store = useChannelStore();
 const route = useRoute();
 
 onMounted(async () => {
@@ -57,7 +57,7 @@ const toggleFormMenu = (event) => {
                     <Button label="Save"
                             class="p-button-sm"
                             v-if="store.item && store.item.id"
-                            data-testid="customers-save"
+                            data-testid="channels-save"
                             @click="store.itemAction('save')"
                             icon="pi pi-save"/>
 
@@ -65,7 +65,7 @@ const toggleFormMenu = (event) => {
                             v-else
                             @click="store.itemAction('create-and-new')"
                             class="p-button-sm"
-                            data-testid="customers-create-and-new"
+                            data-testid="channels-create-and-new"
                             icon="pi pi-save"/>
 
 
@@ -74,7 +74,7 @@ const toggleFormMenu = (event) => {
                         type="button"
                         @click="toggleFormMenu"
                         class="p-button-sm"
-                        data-testid="customers-form-menu"
+                        data-testid="channels-form-menu"
                         icon="pi pi-angle-down"
                         aria-haspopup="true"/>
 
@@ -86,7 +86,7 @@ const toggleFormMenu = (event) => {
 
                     <Button class="p-button-primary p-button-sm"
                             icon="pi pi-times"
-                            data-testid="customers-to-list"
+                            data-testid="channels-to-list"
                             @click="store.toList()">
                     </Button>
                 </div>
@@ -100,45 +100,25 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Name">
                     <InputText class="w-full"
-                               name="customers-name"
-                               data-testid="customers-name"
+                               name="channels-name"
+                               data-testid="channels-name"
                                @update:modelValue="store.watchItem"
                                v-model="store.item.name"/>
                 </VhField>
 
                 <VhField label="Slug">
                     <InputText class="w-full"
-                               name="customers-slug"
-                               data-testid="customers-slug"
+                               name="channels-slug"
+                               data-testid="channels-slug"
                                v-model="store.item.slug"/>
-                </VhField>
-
-                <VhField label="Email">
-                    <InputText class="w-full"
-                               name="customers-email"
-                               data-testid="customers-email"
-                               v-model="store.item.email"/>
-                </VhField>
-
-                <VhField label="Country">
-                    <Dropdown v-model="store.item.country" :options="store.countries"
-                              option-value="name"
-                              optionLabel="name" placeholder="Select a Country" class="w-full md:w-14rem" />
-                </VhField>
-
-                <VhField label="Notes">
-                    <Textarea class="w-full"
-                               name="customers-notes"
-                               data-testid="customers-notes"
-                               v-model="store.item.note"/>
                 </VhField>
 
                 <VhField label="Is Active">
                     <InputSwitch v-bind:false-value="0"
                                  v-bind:true-value="1"
                                  class="p-inputswitch-sm"
-                                 name="customers-active"
-                                 data-testid="customers-active"
+                                 name="channels-active"
+                                 data-testid="channels-active"
                                  v-model="store.item.is_active"/>
                 </VhField>
 

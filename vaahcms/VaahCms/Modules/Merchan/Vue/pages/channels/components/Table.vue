@@ -1,8 +1,8 @@
 <script setup>
 import { vaah } from '../../../vaahvue/pinia/vaah'
-import { useCustomerStore } from '../../../stores/store-customers'
+import { useChannelStore } from '../../../stores/store-channels'
 
-const store = useCustomerStore();
+const store = useChannelStore();
 const useVaah = vaah();
 
 </script>
@@ -38,17 +38,17 @@ const useVaah = vaah();
 
             </Column>
 
-             <Column field="Email" header="Email"
-                     :sortable="true">
 
-                 <template #body="prop">
-                     <Badge v-if="prop.data.deleted_at"
-                            value="Trashed"
-                            severity="danger"></Badge>
-                     {{prop.data.email}}
-                 </template>
+                <Column field="updated_at" header="Updated"
+                        v-if="store.isViewLarge()"
+                        style="width:150px;"
+                        :sortable="true">
 
-             </Column>
+                    <template #body="prop">
+                        {{useVaah.toLocalTimeShortFormat(prop.data.updated_at)}}
+                    </template>
+
+                </Column>
 
             <Column field="is_active" v-if="store.isViewLarge()"
                     :sortable="true"
@@ -57,7 +57,7 @@ const useVaah = vaah();
 
                 <template #body="prop">
                     <InputSwitch v-model.bool="prop.data.is_active"
-                                 data-testid="customers-table-is-active"
+                                 data-testid="channels-table-is-active"
                                  v-bind:false-value="0"  v-bind:true-value="1"
                                  class="p-inputswitch-sm"
                                  @input="store.toggleIsActive(prop.data)">
@@ -74,19 +74,19 @@ const useVaah = vaah();
                     <div class="p-inputgroup ">
 
                         <Button class="p-button-tiny p-button-text"
-                                data-testid="customers-table-to-view"
+                                data-testid="channels-table-to-view"
                                 v-tooltip.top="'View'"
                                 @click="store.toView(prop.data)"
                                 icon="pi pi-eye" />
 
                         <Button class="p-button-tiny p-button-text"
-                                data-testid="customers-table-to-edit"
+                                data-testid="channels-table-to-edit"
                                 v-tooltip.top="'Update'"
                                 @click="store.toEdit(prop.data)"
                                 icon="pi pi-pencil" />
 
                         <Button class="p-button-tiny p-button-danger p-button-text"
-                                data-testid="customers-table-action-trash"
+                                data-testid="channels-table-action-trash"
                                 v-if="store.isViewLarge() && !prop.data.deleted_at"
                                 @click="store.itemAction('trash', prop.data)"
                                 v-tooltip.top="'Trash'"
@@ -94,7 +94,7 @@ const useVaah = vaah();
 
 
                         <Button class="p-button-tiny p-button-success p-button-text"
-                                data-testid="customers-table-action-restore"
+                                data-testid="channels-table-action-restore"
                                 v-if="store.isViewLarge() && prop.data.deleted_at"
                                 @click="store.itemAction('restore', prop.data)"
                                 v-tooltip.top="'Restore'"

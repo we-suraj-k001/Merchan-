@@ -10,15 +10,15 @@ use Faker\Factory;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 use WebReinvent\VaahCms\Models\User;
 use WebReinvent\VaahCms\Libraries\VaahSeeder;
-use VaahCms\Modules\Merchan\Models\Note;
-class Customer extends Model
+
+class Channel extends Model
 {
 
     use SoftDeletes;
     use CrudWithUuidObservantTrait;
 
     //-------------------------------------------------
-    protected $table = 'mer_customers';
+    protected $table = 'mer_channels';
     //-------------------------------------------------
     protected $dates = [
         'created_at',
@@ -30,8 +30,6 @@ class Customer extends Model
         'uuid',
         'name',
         'slug',
-        'email',
-        'country',
         'is_active',
         'created_by',
         'updated_by',
@@ -47,7 +45,7 @@ class Customer extends Model
     ];
 
     //-------------------------------------------------
-    protected function serializeDate(\DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date)
     {
         $date_time_format = config('settings.global.datetime_format');
         return $date->format($date_time_format);
@@ -63,7 +61,6 @@ class Customer extends Model
             'deleted_by',
         ];
     }
-
     //-------------------------------------------------
     public static function getFillableColumns()
     {
@@ -75,26 +72,18 @@ class Customer extends Model
         );
         return $fillable_columns;
     }
-
     //-------------------------------------------------
     public static function getEmptyItem()
     {
         $model = new self();
         $fillable = $model->getFillable();
         $empty_item = [];
-        foreach ($fillable as $column) {
+        foreach ($fillable as $column)
+        {
             $empty_item[$column] = null;
         }
-        $empty_item['note'] = null;
+
         return $empty_item;
-    }
-
-    //-------------------------------------------------
-
-    public function note()
-    {
-        return $this->morphOne(Note::class, 'noteable');
-
     }
 
     //-------------------------------------------------
@@ -175,15 +164,6 @@ class Customer extends Model
             return $response;
         }
 
-        // check if email exist
-        $item = self::where('email', $inputs['email'])->withTrashed()->first();
-
-        if ($item) {
-            $response['success'] = false;
-            $response['messages'][] = "This email is already exist.";
-            return $response;
-        }
-
         // check if slug exist
         $item = self::where('slug', $inputs['slug'])->withTrashed()->first();
 
@@ -197,13 +177,6 @@ class Customer extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
-
-        $customer = self::find($item->id);
-
-        $note = new Note();
-        $note->notes = $inputs['note'];
-
-        $item->note()->save($note);
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -302,10 +275,6 @@ class Customer extends Model
         {
             $rows = $request->rows;
         }
-
-        $list->with(['note']);
-
-//        $list->with(['note' ]);
 
         $list = $list->paginate($rows);
 
@@ -497,7 +466,7 @@ class Customer extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser','note'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
             ->withTrashed()
             ->first();
 
@@ -507,7 +476,6 @@ class Customer extends Model
             $response['errors'][] = 'Record not found with ID: '.$id;
             return $response;
         }
-
         $response['success'] = true;
         $response['data'] = $item;
 
@@ -535,7 +503,6 @@ class Customer extends Model
             return $response;
         }
 
-
         // check if slug exist
         $item = self::where('id', '!=', $id)
             ->withTrashed()
@@ -551,12 +518,6 @@ class Customer extends Model
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
-
-        if($item->note)
-        {
-            $item->note->notes = $inputs['note'];
-            $item->note->save();
-        }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -617,8 +578,6 @@ class Customer extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
-            'email' => 'required|max:50|email',
-
         );
 
         $validator = \Validator::make($inputs, $rules);

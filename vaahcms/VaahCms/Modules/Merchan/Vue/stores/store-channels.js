@@ -3,11 +3,11 @@ import {acceptHMRUpdate, defineStore} from 'pinia'
 import qs from 'qs'
 import {vaah} from '../vaahvue/pinia/vaah'
 
-let model_namespace = 'VaahCms\\Modules\\Merchan\\Models\\Customer';
+let model_namespace = 'VaahCms\\Modules\\Merchan\\Models\\Channel';
 
 
 let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
-let ajax_url = base_url + "/merchan/customers";
+let ajax_url = base_url + "/merchan/channels";
 
 let empty_states = {
     query: {
@@ -26,8 +26,8 @@ let empty_states = {
     }
 };
 
-export const useCustomerStore = defineStore({
-    id: 'customers',
+export const useChannelStore = defineStore({
+    id: 'channels',
     state: () => ({
         base_url: base_url,
         ajax_url: ajax_url,
@@ -49,7 +49,7 @@ export const useCustomerStore = defineStore({
         },
         route: null,
         watch_stopper: null,
-        route_prefix: 'customers.',
+        route_prefix: 'channels.',
         view: 'large',
         show_filters: false,
         list_view_width: 12,
@@ -65,20 +65,7 @@ export const useCustomerStore = defineStore({
         list_create_menu: [],
         item_menu_list: [],
         item_menu_state: null,
-        form_menu_list: [],
-        countries : [
-            { name: 'India'},
-            { name: 'China'},
-            { name: 'Russia' },
-            { name: 'USA' },
-            { name: 'Malaysia' },
-            { name: 'Australia'},
-            { name: 'Canada'},
-            { name: 'Netherland' },
-            { name: 'Germany' },
-            { name: 'Bhutan' },
-
-        ]
+        form_menu_list: []
     }),
     getters: {
 
@@ -107,7 +94,7 @@ export const useCustomerStore = defineStore({
         {
             switch(route_name)
             {
-                case 'customers.index':
+                case 'channels.index':
                     this.view = 'large';
                     this.list_view_width = 12;
                     break;
@@ -238,9 +225,8 @@ export const useCustomerStore = defineStore({
             if(data)
             {
                 this.item = data;
-                this.item.note = data.note.notes;
             }else{
-                this.$router.push({name: 'customers.index'});
+                this.$router.push({name: 'channels.index'});
             }
             await this.getItemMenu();
             await this.getFormMenu();
@@ -417,7 +403,6 @@ export const useCustomerStore = defineStore({
             if(data)
             {
                 this.item = data;
-                this.item.note = data.note.notes;
                 await this.getList();
                 await this.formActionAfter();
                 this.getItemMenu();
@@ -435,7 +420,7 @@ export const useCustomerStore = defineStore({
                 case 'create-and-close':
                 case 'save-and-close':
                     this.setActiveItemAsEmpty();
-                    this.$router.push({name: 'customers.index'});
+                    this.$router.push({name: 'channels.index'});
                     break;
                 case 'save-and-clone':
                     this.item.id = null;
@@ -599,32 +584,32 @@ export const useCustomerStore = defineStore({
         //---------------------------------------------------------------------
         closeForm()
         {
-            this.$router.push({name: 'customers.index'})
+            this.$router.push({name: 'channels.index'})
         },
         //---------------------------------------------------------------------
         toList()
         {
             this.item = vaah().clone(this.assets.empty_item);
-            this.$router.push({name: 'customers.index'})
+            this.$router.push({name: 'channels.index'})
         },
         //---------------------------------------------------------------------
         toForm()
         {
             this.item = vaah().clone(this.assets.empty_item);
             this.getFormMenu();
-            this.$router.push({name: 'customers.form'})
+            this.$router.push({name: 'channels.form'})
         },
         //---------------------------------------------------------------------
         toView(item)
         {
             this.item = vaah().clone(item);
-            this.$router.push({name: 'customers.view', params:{id:item.id}})
+            this.$router.push({name: 'channels.view', params:{id:item.id}})
         },
         //---------------------------------------------------------------------
         toEdit(item)
         {
             this.item = item;
-            this.$router.push({name: 'customers.form', params:{id:item.id}})
+            this.$router.push({name: 'channels.form', params:{id:item.id}})
         },
         //---------------------------------------------------------------------
         isViewLarge()
@@ -929,5 +914,5 @@ export const useCustomerStore = defineStore({
 
 // Pinia hot reload
 if (import.meta.hot) {
-    import.meta.hot.accept(acceptHMRUpdate(useCustomerStore, import.meta.hot))
+    import.meta.hot.accept(acceptHMRUpdate(useChannelStore, import.meta.hot))
 }
