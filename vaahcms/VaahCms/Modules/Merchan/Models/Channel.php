@@ -10,7 +10,7 @@ use Faker\Factory;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 use WebReinvent\VaahCms\Models\User;
 use WebReinvent\VaahCms\Libraries\VaahSeeder;
-
+use VaahCms\Modules\Merchan\Models\Note;
 class Channel extends Model
 {
 
@@ -30,11 +30,17 @@ class Channel extends Model
         'uuid',
         'name',
         'slug',
+        'mer_customer_id',
+        'locale',
+        'currency',
+        'url',
+        'meta',
         'is_active',
         'created_by',
         'updated_by',
         'deleted_by',
     ];
+
     //-------------------------------------------------
     protected $fill_except = [
 
@@ -84,6 +90,22 @@ class Channel extends Model
         }
 
         return $empty_item;
+    }
+
+    //-------------------------------------------------
+
+    public function note()
+    {
+        return $this->morphOne(Note::class, 'noteable');
+
+    }
+
+    //-------------------------------------------------
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'mer_customer_id','id')
+            ->select('id','name');
     }
 
     //-------------------------------------------------
@@ -287,6 +309,35 @@ class Channel extends Model
     }
 
     //-------------------------------------------------
+
+    public static function searchCustomers($request)
+    {
+
+
+        $query = $request['filter']['q']['query'];
+
+        if($query === null)
+        {
+            $projects = Customer::where('is_active',1)
+                ->select('id','name')
+                ->inRandomOrder()
+                ->take(10)
+                ->get();
+        }
+
+        else{
+
+            $projects = Customer::where('is_active',1)
+                ->where('name', 'like', "%$query%")
+                ->select('id','name')
+                ->get();
+        }
+
+        $response['success'] = true;
+        $response['data'] = $projects;
+        return $response;
+
+    }
     public static function updateList($request)
     {
 
@@ -466,7 +517,7 @@ class Channel extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser','customer'])
             ->withTrashed()
             ->first();
 

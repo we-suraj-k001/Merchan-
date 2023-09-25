@@ -1,5 +1,6 @@
 <?php
 include('backend/routes-customers.php');
+include('backend/routes-channels.php');
 /*
 |--------------------------------------------------------------------------
 | Web Routes

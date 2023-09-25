@@ -3,9 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use VaahCms\Modules\Merchan\Models\Channel;
+use WebReinvent\VaahCms\Models\TaxonomyType;
 
-
-class ChannelsController extends Controller
+use WebReinvent\VaahCms\Models\Taxonomy;class ChannelsController extends Controller
 {
 
 
@@ -28,6 +28,9 @@ class ChannelsController extends Controller
             $data['rows'] = config('vaahcms.per_page');
 
             $data['fillable']['columns'] = Channel::getFillableColumns();
+            $data['locale']= Taxonomy::getTaxonomyByType('primary-locale');
+            $data['currency']= Taxonomy::getTaxonomyByType('currency');
+            $data['channel_type']= Taxonomy::getTaxonomyByType('channel-type');
             $data['fillable']['except'] = Channel::getUnFillableColumns();
             $data['empty_item'] = Channel::getEmptyItem();
 
@@ -225,6 +228,25 @@ class ChannelsController extends Controller
         }
     }
     //----------------------------------------------------------
+    public function searchCustomers(Request $request)
+    {
+        try {
 
+            return Channel::searchCustomers($request);
+        }
+        catch (\Exception $e){
+            $response = [];
+            $response['success'] = false;
+            if(env('APP_DEBUG')){
+                $response['errors'][] = $e->getMessage();
+                $response['hint'] = $e->getTrace();
+            } else{
+                $response['errors'][] = 'Something went wrong.';
+
+            }
+            return $response;
+        }
+
+    }
 
 }

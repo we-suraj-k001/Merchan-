@@ -113,6 +113,87 @@ const toggleFormMenu = (event) => {
                                v-model="store.item.slug"/>
                 </VhField>
 
+                <VhField label="Customer Name">
+
+                    <AutoComplete name="channels-customer-name"
+                                  data-testid="channels-customer-name"
+                                  v-model="store.item.customer"
+                                  option-label = "name"
+                                  dropdown
+                                  :suggestions="store.customers"
+                                  @complete="store.searchCustomers"
+                                  @change="store.selectCustomerId"
+                                  class="w-full"
+                    />
+                </VhField>
+
+                <VhField label="Primary Locale">
+                    <Dropdown v-model="store.item.locale" :options="store.assets.locale"
+                              option-value="name"
+                              optionLabel="name" placeholder="Select Locale" class="w-full" />
+                </VhField>
+
+                <VhField label="Default Currency">
+                    <Dropdown v-model="store.item.currency" :options="store.assets.currency"
+                              option-value="name"
+                              optionLabel="name" placeholder="Select Currency" class="w-full" />
+                </VhField>
+
+                <VhField label="Store URL">
+                    <InputText class="w-full"
+                               name="channels-name"
+                               data-testid="channels-name"
+                               @update:modelValue="store.watchItem"
+                               v-model="store.item.name"/>
+                </VhField>
+
+                <VhField label="Type">
+                    <Dropdown v-model="store.item.type" :options="store.assets.channel_type"
+                              option-value="name"
+                              optionLabel="name" placeholder="Select Type" class="w-full" />
+                </VhField>
+
+                <Fieldset
+                    v-if="store.item.type == 'Shopify'"
+                    legend="URL">
+                    <InputText class="w-full"
+                               name="channels-shopify-url"
+                               data-testid="channels-shopify-url"
+                               v-model="store.item.meta.url"/>
+                </Fieldset>
+                <br/>
+                <Fieldset
+                    v-if="store.item.type == 'Shopify'
+                     || store.item.type == 'WooCommerce'"
+                    legend="Admin API Token" class="w-full" >
+                    <InputText class="w-full"
+                               name="channels-shopify-url"
+                               data-testid="channels-shopify-url"
+                               v-model="store.item.meta.admin_api_token"/>
+                </Fieldset>
+                <br/>
+                <Fieldset
+                    v-if="store.item.type == 'Shopify'
+                    || store.item.type == 'WooCommerce'
+                    || store.item.type == 'Bigcommerce'"
+                    legend="API Key" >
+                    <InputText class="w-full"
+                               name="channels-shopify-url"
+                               data-testid="channels-shopify-url"
+                               v-model="store.item.meta.api_key"/>
+                </Fieldset>
+                <br/>
+                <Fieldset
+                    legend="API Secret" class="w-full"
+                    v-if="store.item.type == 'Shopify'
+                     || store.item.type == 'WooCommerce'
+                     || store.item.type == 'Bigcommerce'">
+                    <InputText class="w-full"
+                               name="channels-shopify-url"
+                               data-testid="channels-shopify-url"
+                               v-model="store.item.meta.api_secret"/>
+                </Fieldset>
+                <br/>
                 <VhField label="Is Active">
                     <InputSwitch v-bind:false-value="0"
                                  v-bind:true-value="1"

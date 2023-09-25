@@ -567,6 +567,7 @@ class Customer extends Model
     public static function deleteItem($request, $id): array
     {
         $item = self::where('id', $id)->withTrashed()->first();
+
         if (!$item) {
             $response['success'] = false;
             $response['errors'][] = 'Record does not exist.';

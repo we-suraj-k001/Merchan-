@@ -24,6 +24,11 @@ const items = ref([
                 icon: 'fa-regular fa-chart-bar',
                 to: "/customers"
             },
+            {
+                label: 'Channels',
+                icon: 'fa-regular fa-chart-bar',
+                to: "/channels"
+            },
         ]
     },
 ]);

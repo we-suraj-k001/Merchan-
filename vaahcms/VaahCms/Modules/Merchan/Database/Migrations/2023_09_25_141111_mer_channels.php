@@ -20,9 +20,11 @@ class MerChannels extends Migration
                 $table->uuid('uuid')->nullable()->index();
                 $table->string('name')->nullable()->index();
                 $table->string('slug')->nullable()->index();
-                
+                $table->bigInteger('mer_customer_id')->index();
+                $table->string('locale')->nullable()->index();
+                $table->string('currency')->nullable()->index();
+                $table->string('url')->nullable()->index();
                 $table->boolean('is_active')->nullable()->index();
-
 
                 //----common fields
                 $table->text('meta')->nullable();

@@ -18,7 +18,6 @@ class MerCustomers extends Migration
             Schema::create('mer_customers', function (Blueprint $table) {
                 $table->bigIncrements('id')->unsigned();
                 $table->uuid('uuid')->nullable()->index();
-
                 $table->string('name')->nullable()->index();
                 $table->string('slug')->nullable()->index();
                 $table->string('email')->nullable()->index();

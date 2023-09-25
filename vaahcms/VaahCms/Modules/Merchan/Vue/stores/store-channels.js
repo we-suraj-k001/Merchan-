@@ -65,7 +65,8 @@ export const useChannelStore = defineStore({
         list_create_menu: [],
         item_menu_list: [],
         item_menu_state: null,
-        form_menu_list: []
+        form_menu_list: [],
+        customers : null,
     }),
     getters: {
 
@@ -173,7 +174,16 @@ export const useChannelStore = defineStore({
                 );
             }
         },
+
         //---------------------------------------------------------------------
+
+        async selectCustomerId()
+        {
+            this.item.mer_customer_id = this.item.customer.id;
+        },
+
+        //---------------------------------------------------------------------
+
         afterGetAssets(data, res)
         {
             if(data)
@@ -652,6 +662,39 @@ export const useChannelStore = defineStore({
             return text;
         },
         //---------------------------------------------------------------------
+
+        async searchCustomers(event)
+        {
+            const query = {
+                filter: {
+                    q: event,
+                },
+            };
+
+            const options = {
+                params: query,
+                method: 'post',
+            };
+            await vaah().ajax(
+                this.ajax_url+'/search/customers',
+                this.searchCustomersAfter,
+                options
+            );
+
+        },
+
+        //---------------------------------------------------------------------
+
+        searchCustomersAfter(data,res) {
+            if(data)
+            {
+                this.customers = data;
+            }
+        },
+
+        //---------------------------------------------------------------------
+
+
         async getListSelectedMenu()
         {
             this.list_selected_menu = [

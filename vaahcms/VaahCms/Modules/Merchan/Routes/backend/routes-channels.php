@@ -3,9 +3,9 @@
 Route::group(
     [
         'prefix' => 'backend/merchan/channels',
-        
+
         'middleware' => ['web', 'has.backend.access'],
-        
+
         'namespace' => 'Backend',
 ],
 function () {
@@ -71,5 +71,10 @@ function () {
         ->name('vh.backend.merchan.channels.item.action');
 
     //---------------------------------------------------------
+    /**
+     * Search Customers
+     */
+    Route::post('/search/customers', 'ChannelsController@searchCustomers')
+        ->name('vh.backend.merchan.channels.customer.search');
 
 });

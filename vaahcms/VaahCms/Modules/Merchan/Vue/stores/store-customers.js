@@ -344,6 +344,7 @@ export const useCustomerStore = defineStore({
         },
         //---------------------------------------------------------------------
         async itemAction(type, item=null){
+
             if(!item)
             {
                 item = this.item;
@@ -417,6 +418,10 @@ export const useCustomerStore = defineStore({
             if(data)
             {
                 this.item = data;
+                if(data.note)
+                {
+                    this.item.note = data.note.notes;
+                }
                 this.item.note = data.note.notes;
                 await this.getList();
                 await this.formActionAfter();
