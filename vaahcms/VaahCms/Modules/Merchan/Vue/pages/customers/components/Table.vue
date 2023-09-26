@@ -1,8 +1,9 @@
 <script setup>
 import { vaah } from '../../../vaahvue/pinia/vaah'
 import { useCustomerStore } from '../../../stores/store-customers'
-
+import { useChannelStore } from '../../../stores/store-channels'
 const store = useCustomerStore();
+const channel_store = useChannelStore();
 const useVaah = vaah();
 
 </script>
@@ -56,7 +57,7 @@ const useVaah = vaah();
                      <div class="p-inputgroup">
                          <span class="p-inputgroup-addon cursor-pointer"
                                v-tooltip.top="'View Channel'"
-                               @click="store.toViewChannel(prop.data)">
+                               @click="channel_store.toViewChannel(prop.data)">
                             <b v-if="prop.data.channels_count">
                                 {{prop.data.channels_count}}
                             </b>
@@ -67,7 +68,7 @@ const useVaah = vaah();
                          <Button icon="pi pi-plus" severity="info" v-if="!prop.data.deleted_at"
                                  size="small"
                                  v-tooltip.top="'Create Channel'"
-                                 @click="store.toCreateChannel(prop.data)" />
+                                 @click="channel_store.toCreateChannel(prop.data)" />
                      </div>
                  </template>
 

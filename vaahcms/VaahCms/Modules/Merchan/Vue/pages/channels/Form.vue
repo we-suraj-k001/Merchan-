@@ -10,6 +10,7 @@ const store = useChannelStore();
 const route = useRoute();
 
 onMounted(async () => {
+
     if(route.params && route.params.id)
     {
         await store.getItem(route.params.id);
@@ -153,40 +154,42 @@ const toggleFormMenu = (event) => {
                               @change="store.resetApiKeys()"
                               placeholder="Select Type" class="w-full" />
                 </VhField>
-
+                <div class="fieldset-container">
                 <Fieldset
-                    v-if="store.item.meta.type == 'Shopify'"
-                    legend="URL">
+                    v-if="store.item.meta && store.item.meta.type == 'Shopify'"
+                    legend="URL"
+                    class="fieldset-spacing">
                     <InputText class="w-full"
                                name="channels-shopify-url"
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.url"/>
+
                 </Fieldset>
-                <br/>
+                <br v-if="store.item.meta.url"/>
                 <Fieldset
-                    v-if="store.item.meta.type == 'Shopify'
+                    v-if="store.item.meta && store.item.meta.type == 'Shopify'
                      || store.item.meta.type == 'WooCommerce'"
-                    legend="Admin API Token" class="w-full" >
+                    legend="Admin API Token" class="w-full fieldset-spacing" >
                     <InputText class="w-full"
                                name="channels-shopify-url"
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.admin_api_token"/>
                 </Fieldset>
-                <br/>
+                <br v-if="store.item.meta.admin_api_token"/>
                 <Fieldset
-                    v-if="store.item.meta.type == 'Shopify'
+                    v-if="store.item.meta && store.item.meta.type == 'Shopify'
                     || store.item.meta.type == 'WooCommerce'
                     || store.item.meta.type == 'Bigcommerce'"
-                    legend="API Key" >
+                    legend="API Key" class="fieldset-spacing">
                     <InputText class="w-full"
                                name="channels-shopify-url"
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.api_key"/>
                 </Fieldset>
-                <br/>
+                <br v-if="store.item.meta.api_key"/>
                 <Fieldset
-                    legend="API Secret" class="w-full"
-                    v-if="store.item.meta.type == 'Shopify'
+                    legend="API Secret" class="w-full fieldset-spacing"
+                    v-if="store.item.meta && store.item.meta.type == 'Shopify'
                      || store.item.meta.type == 'WooCommerce'
                      || store.item.meta.type == 'Bigcommerce'">
                     <InputText class="w-full"
@@ -195,6 +198,14 @@ const toggleFormMenu = (event) => {
                                v-model="store.item.meta.api_secret"/>
                 </Fieldset>
                 <br/>
+                </div>
+                <VhField label="Notes">
+                    <Textarea class="w-full"
+                              name="customers-notes"
+                              data-testid="customers-notes"
+                              v-model="store.item.note"/>
+                </VhField>
+
                 <VhField label="Is Active">
                     <InputSwitch v-bind:false-value="0"
                                  v-bind:true-value="1"
@@ -210,3 +221,13 @@ const toggleFormMenu = (event) => {
     </div>
 
 </template>
+<style>
+.fieldset-spacing {
+    margin-bottom: 1rem;
+}
+
+.fieldset-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+</style>

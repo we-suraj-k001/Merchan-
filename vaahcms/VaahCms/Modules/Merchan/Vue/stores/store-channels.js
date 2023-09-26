@@ -67,6 +67,7 @@ export const useChannelStore = defineStore({
         item_menu_state: null,
         form_menu_list: [],
         customers : null,
+        selected_customers : null,
     }),
     getters: {
 
@@ -121,6 +122,31 @@ export const useChannelStore = defineStore({
             }
         },
         //---------------------------------------------------------------------
+
+        async setCustomerId(id)
+        {
+            this.item.mer_customer_id = id;
+        },
+
+
+
+        //---------------------------------------------------------------------
+
+        async toCreateChannel(item){
+
+
+            this.$router.push({name: 'channels.form'});
+            this.item.mer_customer_id = item.id;
+            this.route.params.id = item.id;
+            this.item.customer = {
+                id: item.id,
+                name: item.name,
+            };
+
+        },
+
+        //---------------------------------------------------------------------
+
         watchRoutes(route)
         {
             //watch routes
@@ -213,8 +239,14 @@ export const useChannelStore = defineStore({
             let options = {
                 query: vaah().clone(this.query)
             };
+            let url = this.ajax_url;
+
+            if(this.route.params.customer_id)
+            {
+                url = url + '/' +  this.route.params.customer_id;
+            }
             await vaah().ajax(
-                this.ajax_url + '/' + this.route.params.customer_id,
+                url,
                 this.afterGetList,
                 options
             );
@@ -244,6 +276,7 @@ export const useChannelStore = defineStore({
             if(data)
             {
                 this.item = data;
+                this.item.note = data.note.notes;
             }else{
                 this.$router.push({name: 'channels.index'});
             }
@@ -422,6 +455,10 @@ export const useChannelStore = defineStore({
             if(data)
             {
                 this.item = data;
+                if(data.note)
+                {
+                    this.item.note = data.note.notes;
+                }
                 await this.getList();
                 await this.formActionAfter();
                 this.getItemMenu();
@@ -587,7 +624,7 @@ export const useChannelStore = defineStore({
         {
             //reset query strings
             await this.resetQueryString();
-
+            this.selected_customers = null;
             //reload page list
             await this.getList();
         },
@@ -612,6 +649,29 @@ export const useChannelStore = defineStore({
             this.$router.push({name: 'channels.index',params:{customer_id:this.route.params.customer_id}})
         },
         //---------------------------------------------------------------------
+        async searchTestSuites(event)
+        {
+
+            const query = {
+                filter: {
+                    q: event,
+                },
+            };
+
+            const options = {
+                params: query,
+                method: 'post',
+            };
+            await vaah().ajax(
+                this.ajax_url+'/search/customers',
+                this.searchTestSuitesAfter,
+                options
+            );
+
+        },
+
+        //---------------------------------------------------------------------
+
         toForm()
         {
             this.item = vaah().clone(this.assets.empty_item);
@@ -690,6 +750,36 @@ export const useChannelStore = defineStore({
                 options
             );
 
+        },
+
+        //---------------------------------------------------------------------
+
+        addCustomers() {
+
+
+            const unique_customers = [];
+            const check_names = new Set();
+
+            for (const customers of this.selected_customers) {
+                if (!check_names.has(customers.name)) {
+                    unique_customers.push(customers);
+                    check_names.add(customers.name);
+                }
+            }
+
+            this.selected_customers = unique_customers;
+            const customers_slug_set = new Set(this.selected_customers.map(item => item.slug));
+            const customers_slug_array = [...customers_slug_set];
+            this.query.filter.customers = customers_slug_array;
+
+        },
+
+        //---------------------------------------------------------------------
+
+        toViewChannel(item){
+
+            this.$router.push({name: 'channels.index'})
+            this.query.filter.customers = [item.slug];
         },
 
         //---------------------------------------------------------------------

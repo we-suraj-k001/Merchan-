@@ -102,6 +102,25 @@ const store = useChannelStore();
 
             </VhFieldVertical>
 
+            <Divider/>
+
+            <VhFieldVertical >
+                <template #label>
+                    <b>Customer:</b>
+                </template>
+
+                <AutoComplete name="channels-customer-filter"
+                              data-testid="channels-customer"
+                              v-model="store.selected_customers"
+                              @change = "store.addCustomers()"
+                              option-label = "name"
+                              multiple
+                              :complete-on-focus = "true"
+                              :suggestions="store.customers"
+                              @complete="store.searchCustomers"
+                              class="w-full " />
+
+            </VhFieldVertical>
 
         </Sidebar>
 

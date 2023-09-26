@@ -206,8 +206,6 @@ class Customer extends Model
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
 
-        $customer = self::find($item->id);
-
         $note = new Note();
         $note->notes = $inputs['note'];
 

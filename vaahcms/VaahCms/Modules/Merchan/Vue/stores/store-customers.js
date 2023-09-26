@@ -625,19 +625,9 @@ export const useCustomerStore = defineStore({
             this.item = vaah().clone(item);
             this.$router.push({name: 'customers.view', params:{id:item.id}})
         },
-        //---------------------------------------------------------------------
-        toViewChannel(data){
 
-            this.$router.push({name: 'channels.index',params:{customer_id:data.id}})
-        },
 
-        //---------------------------------------------------------------------
 
-        toCreateChannel(data){
-
-            this.$router.push({name: 'channels.form',params:{customer_id:data.id}})
-        },
-        
         //---------------------------------------------------------------------
 
         toEdit(item)

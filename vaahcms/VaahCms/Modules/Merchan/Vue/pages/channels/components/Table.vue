@@ -38,11 +38,11 @@ const useVaah = vaah();
 
             </Column>
 
-             <Column field="name" header="Customer Name"
+             <Column field="customer_name" header="Customer Name"
                      :sortable="true">
 
                  <template #body="prop">
-                     {{prop.data.customer.name}}
+                     <b v-if="prop.data.customer">{{prop.data.customer.name}}</b>
                  </template>
 
              </Column>

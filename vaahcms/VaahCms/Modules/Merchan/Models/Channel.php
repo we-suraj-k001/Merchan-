@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Faker\Factory;
+use VaahCms\Modules\Merchan\Models\Note;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 use WebReinvent\VaahCms\Models\User;
 use WebReinvent\VaahCms\Libraries\VaahSeeder;
-use VaahCms\Modules\Merchan\Models\Note;
+
 class Channel extends Model
 {
 
@@ -204,6 +205,11 @@ class Channel extends Model
         $item->meta = json_encode($inputs['meta']);
         $item->save();
 
+        $note = new Note();
+        $note->notes = $inputs['note'];
+
+        $item->note()->save($note);
+
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
         return $response;
@@ -287,7 +293,27 @@ class Channel extends Model
         });
 
     }
+
     //-------------------------------------------------
+
+    public function scopeCustomersFilter($query, $filter)
+    {
+
+        if(!isset($filter['customers']))
+        {
+            return $query;
+        }
+
+        $customers = $filter['customers'];
+
+        return $query->whereHas('customer', function ($query) use ($customers) {
+            $query->whereIn('slug', $customers);
+        });
+
+    }
+
+    //-------------------------------------------------
+
     public static function getList($request,$customer_id)
     {
 
@@ -296,7 +322,7 @@ class Channel extends Model
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
         $list->searchFilter($request->filter);
-
+        $list->customersFilter($request->filter);
         $rows = config('vaahcms.per_page');
 
         if($request->has('rows'))
@@ -328,7 +354,7 @@ class Channel extends Model
         if($query === null)
         {
             $projects = Customer::where('is_active',1)
-                ->select('id','name')
+                ->select('id','name','slug')
                 ->inRandomOrder()
                 ->take(10)
                 ->get();
@@ -338,7 +364,7 @@ class Channel extends Model
 
             $projects = Customer::where('is_active',1)
                 ->where('name', 'like', "%$query%")
-                ->select('id','name')
+                ->select('id','name','slug')
                 ->get();
         }
 
@@ -526,7 +552,7 @@ class Channel extends Model
     {
 
         $item = self::where('id', $id)
-            ->with(['createdByUser', 'updatedByUser', 'deletedByUser','customer'])
+            ->with(['createdByUser', 'updatedByUser', 'deletedByUser','customer','note'])
             ->withTrashed()
             ->first();
 
@@ -580,6 +606,11 @@ class Channel extends Model
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
 
+        if($item->note)
+        {
+            $item->note->notes = $inputs['note'];
+            $item->note->save();
+        }
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
         return $response;
