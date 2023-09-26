@@ -54,6 +54,14 @@ class Customer extends Model
     }
 
     //-------------------------------------------------
+
+    public function channels()
+    {
+        return $this->hasMany(Channel::class, 'mer_customer_id', 'id');
+    }
+
+    //-------------------------------------------------
+
     public static function getUnFillableColumns()
     {
         return [
@@ -291,7 +299,9 @@ class Customer extends Model
     //-------------------------------------------------
     public static function getList($request)
     {
-        $list = self::getSorted($request->filter);
+        $list = self::with(['note'])
+        ->getSorted($request->filter);
+        $list->withCount(['channels']);
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
         $list->searchFilter($request->filter);
@@ -302,10 +312,6 @@ class Customer extends Model
         {
             $rows = $request->rows;
         }
-
-        $list->with(['note']);
-
-//        $list->with(['note' ]);
 
         $list = $list->paginate($rows);
 

@@ -17,7 +17,7 @@ function () {
     /**
      * Get List
      */
-    Route::get('/', 'ChannelsController@getList')
+    Route::get('/{customer_id?}', 'ChannelsController@getList')
         ->name('vh.backend.merchan.channels.list');
     /**
      * Update List
@@ -45,7 +45,7 @@ function () {
     /**
      * Get Item
      */
-    Route::get('/{id}', 'ChannelsController@getItem')
+    Route::get('/id/{id}', 'ChannelsController@getItem')
         ->name('vh.backend.merchan.channels.read');
     /**
      * Update Item

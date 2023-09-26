@@ -54,10 +54,10 @@ use WebReinvent\VaahCms\Models\Taxonomy;class ChannelsController extends Control
     }
 
     //----------------------------------------------------------
-    public function getList(Request $request)
+    public function getList(Request $request,$customer_id = null)
     {
         try{
-            return Channel::getList($request);
+            return Channel::getList($request,$customer_id);
         }catch (\Exception $e){
             $response = [];
             $response['success'] = false;

@@ -141,20 +141,21 @@ const toggleFormMenu = (event) => {
 
                 <VhField label="Store URL">
                     <InputText class="w-full"
-                               name="channels-name"
-                               data-testid="channels-name"
-                               @update:modelValue="store.watchItem"
-                               v-model="store.item.name"/>
+                               name="channels-url"
+                               data-testid="channels-url"
+                               v-model="store.item.url"/>
                 </VhField>
 
                 <VhField label="Type">
-                    <Dropdown v-model="store.item.type" :options="store.assets.channel_type"
+                    <Dropdown v-model="store.item.meta.type" :options="store.assets.channel_type"
                               option-value="name"
-                              optionLabel="name" placeholder="Select Type" class="w-full" />
+                              optionLabel="name"
+                              @change="store.resetApiKeys()"
+                              placeholder="Select Type" class="w-full" />
                 </VhField>
 
                 <Fieldset
-                    v-if="store.item.type == 'Shopify'"
+                    v-if="store.item.meta.type == 'Shopify'"
                     legend="URL">
                     <InputText class="w-full"
                                name="channels-shopify-url"
@@ -163,8 +164,8 @@ const toggleFormMenu = (event) => {
                 </Fieldset>
                 <br/>
                 <Fieldset
-                    v-if="store.item.type == 'Shopify'
-                     || store.item.type == 'WooCommerce'"
+                    v-if="store.item.meta.type == 'Shopify'
+                     || store.item.meta.type == 'WooCommerce'"
                     legend="Admin API Token" class="w-full" >
                     <InputText class="w-full"
                                name="channels-shopify-url"
@@ -173,9 +174,9 @@ const toggleFormMenu = (event) => {
                 </Fieldset>
                 <br/>
                 <Fieldset
-                    v-if="store.item.type == 'Shopify'
-                    || store.item.type == 'WooCommerce'
-                    || store.item.type == 'Bigcommerce'"
+                    v-if="store.item.meta.type == 'Shopify'
+                    || store.item.meta.type == 'WooCommerce'
+                    || store.item.meta.type == 'Bigcommerce'"
                     legend="API Key" >
                     <InputText class="w-full"
                                name="channels-shopify-url"
@@ -185,9 +186,9 @@ const toggleFormMenu = (event) => {
                 <br/>
                 <Fieldset
                     legend="API Secret" class="w-full"
-                    v-if="store.item.type == 'Shopify'
-                     || store.item.type == 'WooCommerce'
-                     || store.item.type == 'Bigcommerce'">
+                    v-if="store.item.meta.type == 'Shopify'
+                     || store.item.meta.type == 'WooCommerce'
+                     || store.item.meta.type == 'Bigcommerce'">
                     <InputText class="w-full"
                                name="channels-shopify-url"
                                data-testid="channels-shopify-url"

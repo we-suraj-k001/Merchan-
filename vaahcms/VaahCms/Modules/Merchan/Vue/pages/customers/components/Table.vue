@@ -26,7 +26,7 @@ const useVaah = vaah();
             <Column field="id" header="ID" :style="{width: store.getIdWidth()}" :sortable="true">
             </Column>
 
-            <Column field="name" header="Name"
+            <Column field="name" header="Name" :style="{width: store.getNameWidth()}"
                     :sortable="true">
 
                 <template #body="prop">
@@ -38,17 +38,41 @@ const useVaah = vaah();
 
             </Column>
 
-             <Column field="Email" header="Email"
+             <Column field="country" header="Country" :style="{width: store.getCountryWidth()}"
                      :sortable="true">
 
                  <template #body="prop">
                      <Badge v-if="prop.data.deleted_at"
                             value="Trashed"
                             severity="danger"></Badge>
-                     {{prop.data.email}}
+                     {{prop.data.country}}
                  </template>
 
              </Column>
+
+             <Column field="Channel" header="Channel">
+
+                 <template #body="prop">
+                     <div class="p-inputgroup">
+                         <span class="p-inputgroup-addon cursor-pointer"
+                               v-tooltip.top="'View Channel'"
+                               @click="store.toViewChannel(prop.data)">
+                            <b v-if="prop.data.channels_count">
+                                {{prop.data.channels_count}}
+                            </b>
+                             <b v-else="prop.data.channels_count">
+                                {{0}}
+                            </b>
+                        </span>
+                         <Button icon="pi pi-plus" severity="info" v-if="!prop.data.deleted_at"
+                                 size="small"
+                                 v-tooltip.top="'Create Channel'"
+                                 @click="store.toCreateChannel(prop.data)" />
+                     </div>
+                 </template>
+
+             </Column>
+
 
             <Column field="is_active" v-if="store.isViewLarge()"
                     :sortable="true"

@@ -88,7 +88,11 @@ class Channel extends Model
         {
             $empty_item[$column] = null;
         }
-
+        $empty_item['meta']['type'] = null;
+        $empty_item['meta']['url'] = null;
+        $empty_item['meta']['admin_api_token'] = null;
+        $empty_item['meta']['api_key'] = null;
+        $empty_item['meta']['api_secret'] = null;
         return $empty_item;
     }
 
@@ -168,7 +172,6 @@ class Channel extends Model
     //-------------------------------------------------
     public static function createItem($request)
     {
-
         $inputs = $request->all();
 
         $validation = self::validation($inputs);
@@ -198,6 +201,7 @@ class Channel extends Model
         $item = new self();
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
+        $item->meta = json_encode($inputs['meta']);
         $item->save();
 
         $response = self::getItem($item->id);
@@ -284,9 +288,11 @@ class Channel extends Model
 
     }
     //-------------------------------------------------
-    public static function getList($request)
+    public static function getList($request,$customer_id)
     {
-        $list = self::getSorted($request->filter);
+
+        $list = self::with(['customer'])
+        ->getSorted($request->filter);
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
         $list->searchFilter($request->filter);
@@ -298,6 +304,9 @@ class Channel extends Model
             $rows = $request->rows;
         }
 
+        if (!is_null($customer_id)) {
+            $list->where('mer_customer_id', $customer_id);
+        }
         $list = $list->paginate($rows);
 
         $response['success'] = true;
@@ -527,6 +536,7 @@ class Channel extends Model
             $response['errors'][] = 'Record not found with ID: '.$id;
             return $response;
         }
+        $item->meta = json_decode($item->meta);
         $response['success'] = true;
         $response['data'] = $item;
 

@@ -177,6 +177,14 @@ export const useChannelStore = defineStore({
 
         //---------------------------------------------------------------------
 
+        resetApiKeys()
+        {
+            this.item.meta.url = this.item.meta.admin_api_token =
+            this.item.meta.api_key = this.item.meta.api_secret = null;
+        },
+
+        //---------------------------------------------------------------------
+
         async selectCustomerId()
         {
             this.item.mer_customer_id = this.item.customer.id;
@@ -206,7 +214,7 @@ export const useChannelStore = defineStore({
                 query: vaah().clone(this.query)
             };
             await vaah().ajax(
-                this.ajax_url,
+                this.ajax_url + '/' + this.route.params.customer_id,
                 this.afterGetList,
                 options
             );
@@ -224,11 +232,12 @@ export const useChannelStore = defineStore({
         async getItem(id) {
             if(id){
                 await vaah().ajax(
-                    ajax_url+'/'+id,
+                    ajax_url+'/id/'+id,
                     this.getItemAfter
                 );
             }
         },
+
         //---------------------------------------------------------------------
         async getItemAfter(data, res)
         {
@@ -600,7 +609,7 @@ export const useChannelStore = defineStore({
         toList()
         {
             this.item = vaah().clone(this.assets.empty_item);
-            this.$router.push({name: 'channels.index'})
+            this.$router.push({name: 'channels.index',params:{customer_id:this.route.params.customer_id}})
         },
         //---------------------------------------------------------------------
         toForm()

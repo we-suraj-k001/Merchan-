@@ -422,7 +422,7 @@ export const useCustomerStore = defineStore({
                 {
                     this.item.note = data.note.notes;
                 }
-                this.item.note = data.note.notes;
+
                 await this.getList();
                 await this.formActionAfter();
                 this.getItemMenu();
@@ -626,6 +626,20 @@ export const useCustomerStore = defineStore({
             this.$router.push({name: 'customers.view', params:{id:item.id}})
         },
         //---------------------------------------------------------------------
+        toViewChannel(data){
+
+            this.$router.push({name: 'channels.index',params:{customer_id:data.id}})
+        },
+
+        //---------------------------------------------------------------------
+
+        toCreateChannel(data){
+
+            this.$router.push({name: 'channels.form',params:{customer_id:data.id}})
+        },
+        
+        //---------------------------------------------------------------------
+
         toEdit(item)
         {
             this.item = item;
@@ -651,6 +665,26 @@ export const useCustomerStore = defineStore({
             return width+'px';
         },
         //---------------------------------------------------------------------
+        getNameWidth()
+        {
+            let width = 200;
+            if(!this.isViewLarge())
+            {
+                width = 100;
+            }
+            return width+'px';
+        },
+        //---------------------------------------------------------------------
+        getCountryWidth()
+        {
+            let width = 200;
+            if(!this.isViewLarge())
+            {
+                width = 100;
+            }
+            return width+'px';
+        },
+        //---------------------------------------------------------------------
         getActionWidth()
         {
             let width = 100;
@@ -661,6 +695,7 @@ export const useCustomerStore = defineStore({
             return width+'px';
         },
         //---------------------------------------------------------------------
+
         getActionLabel()
         {
             let text = null;

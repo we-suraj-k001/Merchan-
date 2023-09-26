@@ -38,6 +38,14 @@ const useVaah = vaah();
 
             </Column>
 
+             <Column field="name" header="Customer Name"
+                     :sortable="true">
+
+                 <template #body="prop">
+                     {{prop.data.customer.name}}
+                 </template>
+
+             </Column>
 
                 <Column field="updated_at" header="Updated"
                         v-if="store.isViewLarge()"

@@ -7,7 +7,7 @@ import Item from '../pages/channels/Item.vue'
 
 routes_list = {
 
-    path: '/channels',
+    path: '/channels/:customer_id?',
     name: 'channels.index',
     component: List,
     props: true,
