@@ -206,10 +206,13 @@ class Customer extends Model
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
 
-        $note = new Note();
-        $note->notes = $inputs['note'];
+        if(isset($inputs['note']))
+        {
+            $note = new Note();
+            $note->notes = $inputs['note'];
 
-        $item->note()->save($note);
+            $item->note()->save($note);
+        }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -502,6 +505,7 @@ class Customer extends Model
 
         $item = self::where('id', $id)
             ->with(['createdByUser', 'updatedByUser', 'deletedByUser','note'])
+            ->withCount(['channels'])
             ->withTrashed()
             ->first();
 
@@ -561,6 +565,19 @@ class Customer extends Model
             $item->note->notes = $inputs['note'];
             $item->note->save();
         }
+
+        else
+        {
+
+            if(isset($inputs['note']))
+            {
+                $note = new Note();
+                $note->notes = $inputs['note'];
+                $item->note()->save($note);
+            }
+
+        }
+
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -622,8 +639,8 @@ class Customer extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
-            'email' => 'required|max:50|email',
-
+            'email' => 'required|max:100|email',
+            'notes' => 'max:200'
         );
 
         $validator = \Validator::make($inputs, $rules);

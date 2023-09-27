@@ -154,7 +154,8 @@ const toggleFormMenu = (event) => {
                               @change="store.resetApiKeys()"
                               placeholder="Select Type" class="w-full" />
                 </VhField>
-                <div class="fieldset-container">
+
+                <VhField >
                 <Fieldset
                     v-if="store.item.meta && store.item.meta.type == 'Shopify'"
                     legend="URL"
@@ -165,7 +166,9 @@ const toggleFormMenu = (event) => {
                                v-model="store.item.meta.url"/>
 
                 </Fieldset>
-                <br v-if="store.item.meta.url"/>
+                </VhField>
+
+                <VhField >
                 <Fieldset
                     v-if="store.item.meta && store.item.meta.type == 'Shopify'
                      || store.item.meta.type == 'WooCommerce'"
@@ -175,7 +178,10 @@ const toggleFormMenu = (event) => {
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.admin_api_token"/>
                 </Fieldset>
-                <br v-if="store.item.meta.admin_api_token"/>
+
+                    </VhField >
+
+                <VhField >
                 <Fieldset
                     v-if="store.item.meta && store.item.meta.type == 'Shopify'
                     || store.item.meta.type == 'WooCommerce'
@@ -186,7 +192,10 @@ const toggleFormMenu = (event) => {
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.api_key"/>
                 </Fieldset>
-                <br v-if="store.item.meta.api_key"/>
+
+                    </VhField >
+
+                <VhField >
                 <Fieldset
                     legend="API Secret" class="w-full fieldset-spacing"
                     v-if="store.item.meta && store.item.meta.type == 'Shopify'
@@ -197,7 +206,8 @@ const toggleFormMenu = (event) => {
                                data-testid="channels-shopify-url"
                                v-model="store.item.meta.api_secret"/>
                 </Fieldset>
-                <br/>
+                    </VhField >
+
                 </div>
                 <VhField label="Notes">
                     <Textarea class="w-full"
@@ -215,7 +225,6 @@ const toggleFormMenu = (event) => {
                                  v-model="store.item.is_active"/>
                 </VhField>
 
-            </div>
         </Panel>
 
     </div>

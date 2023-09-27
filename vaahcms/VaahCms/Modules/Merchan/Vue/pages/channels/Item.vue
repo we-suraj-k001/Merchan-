@@ -110,7 +110,7 @@ const toggleItemMenu = (event) => {
 
             <div class="mt-2" v-if="store.item">
 
-                <Message severity="info" :closable="false">{{store.item.note}}</Message>
+                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note}}</Message>
                 <Message severity="error"
                          class="p-container-message"
                          :closable="false"
@@ -142,6 +142,41 @@ const toggleItemMenu = (event) => {
 
                         <template v-if="column === 'created_by' || column === 'updated_by' ||
                         column === 'mer_customer_id' || column === 'note'">
+                        </template>
+
+                        <template v-else-if="column == 'meta'">
+                            <tr v-if="store.item.meta.admin_api_token">
+                                <td :style="{width: label_width}">
+                                    <b>Admin API Token</b>
+                                </td>
+                                <td  colspan="2">
+                                    {{store.item.meta.admin_api_token}}
+                                </td>
+                            </tr>
+                            <tr v-if="store.item.meta.api_key">
+                                <td :style="{width: label_width}">
+                                    <b>API Key</b>
+                                </td>
+                                <td  colspan="2">
+                                    {{store.item.meta.api_key}}
+                                </td>
+                            </tr>
+                            <tr v-if="store.item.meta.api_secret">
+                                <td :style="{width: label_width}">
+                                    <b>Admin API Token</b>
+                                </td>
+                                <td  colspan="2">
+                                    {{store.item.meta.api_secret}}
+                                </td>
+                            </tr>
+                            <tr v-if="store.item.meta.url">
+                                <td :style="{width: label_width}">
+                                    <b>Admin API Token</b>
+                                </td>
+                                <td  colspan="2">
+                                    {{store.item.meta.url}}
+                                </td>
+                            </tr>
                         </template>
 
                         <template v-else-if="column === 'id' || column === 'uuid'">

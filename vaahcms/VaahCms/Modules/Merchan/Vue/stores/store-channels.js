@@ -18,7 +18,7 @@ let empty_states = {
             is_active: null,
             trashed: null,
             sort: null,
-            customers:[],
+            customers:null,
         },
     },
     action: {
@@ -67,6 +67,7 @@ export const useChannelStore = defineStore({
         item_menu_list: [],
         item_menu_state: null,
         form_menu_list: [],
+        customers : null,
 
     }),
     getters: {
@@ -138,12 +139,11 @@ export const useChannelStore = defineStore({
             this.$router.push({name: 'channels.form'});
             this.item.mer_customer_id = item.id;
             this.route.params.id = item.id;
-            this.query.filter.customers = [item.slug];
+
             this.item.customer = {
                 id: item.id,
                 name: item.name,
             };
-
         },
 
         //---------------------------------------------------------------------
@@ -180,7 +180,9 @@ export const useChannelStore = defineStore({
                 },{deep: true}
             )
         },
+
         //---------------------------------------------------------------------
+
          watchItem(name)
           {
               if(name && name !== "")
@@ -189,6 +191,7 @@ export const useChannelStore = defineStore({
                   this.item.slug = vaah().strToSlug(name);
               }
           },
+
         //---------------------------------------------------------------------
         async getAssets() {
 
@@ -756,9 +759,7 @@ export const useChannelStore = defineStore({
 
         //---------------------------------------------------------------------
 
-
         toViewChannel(item){
-
             this.$router.push({name: 'channels.index'})
             this.query.filter.customers = [item.slug];
         },

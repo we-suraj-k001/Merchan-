@@ -94,6 +94,7 @@ class Channel extends Model
         $empty_item['meta']['admin_api_token'] = null;
         $empty_item['meta']['api_key'] = null;
         $empty_item['meta']['api_secret'] = null;
+        $empty_item['note'] = null;
         return $empty_item;
     }
 
@@ -205,10 +206,12 @@ class Channel extends Model
         $item->meta = json_encode($inputs['meta']);
         $item->save();
 
-        $note = new Note();
-        $note->notes = $inputs['note'];
-
-        $item->note()->save($note);
+        if(isset($inputs['note']))
+        {
+            $note = new Note();
+            $note->notes = $inputs['note'];
+            $item->note()->save($note);
+        }
 
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
@@ -354,7 +357,7 @@ class Channel extends Model
         if($query === null)
         {
             $projects = Customer::where('is_active',1)
-                ->select('name')
+                ->select('id','name')
                 ->inRandomOrder()
                 ->take(10)
                 ->get();
@@ -364,7 +367,7 @@ class Channel extends Model
 
             $projects = Customer::where('is_active',1)
                 ->where('name', 'like', "%$query%")
-                ->select('name')
+                ->select('id','name')
                 ->get();
         }
 
@@ -611,6 +614,17 @@ class Channel extends Model
             $item->note->notes = $inputs['note'];
             $item->note->save();
         }
+        else{
+
+            if(isset($inputs['note']))
+            {
+                $note = new Note();
+                $note->notes = $inputs['note'];
+
+                $item->note()->save($note);
+            }
+
+        }
         $response = self::getItem($item->id);
         $response['messages'][] = 'Saved successfully.';
         return $response;
@@ -670,6 +684,11 @@ class Channel extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
+            'url' => 'required|max:150',
+            'meta.url' => 'max:100',
+            'meta.admin_api_token' => 'max:100',
+            'meta.api_key' => 'max:100',
+            'meta.api_secret' => 'max:100'
         );
 
         $validator = \Validator::make($inputs, $rules);

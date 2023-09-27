@@ -109,7 +109,7 @@ const toggleItemMenu = (event) => {
 
 
             <div class="mt-2" v-if="store.item">
-                <Message severity="info" :closable="false">{{store.item.note}}</Message>
+                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note}}</Message>
                 <Message severity="error"
                          class="p-container-message"
                          :closable="false"
@@ -139,7 +139,7 @@ const toggleItemMenu = (event) => {
                     <tbody class="p-datatable-tbody">
                     <template v-for="(value, column) in store.item ">
 
-                        <template v-if="column === 'created_by' || column === 'updated_by' || column === 'note'">
+                        <template v-if="column === 'created_by' || column === 'updated_by' || column === 'note' || column === 'meta'">
                         </template>
 
                         <template v-else-if="column === 'id' || column === 'uuid'">
@@ -147,6 +147,19 @@ const toggleItemMenu = (event) => {
                                        :value="value"
                                        :can_copy="true"
                             />
+                        </template>
+
+                        <template v-else-if="column == 'channels_count'">
+                            <tr>
+                                <td :style="{width: label_width}">
+                                    <b>Channels</b>
+                                </td>
+                                <td  colspan="2">
+                                    <Tag severity="info">
+                                        {{store.item.channels_count}}
+                                    </Tag>
+                                </td>
+                            </tr>
                         </template>
 
                         <template v-else-if="(column === 'created_by_user' || column === 'updated_by_user'  || column === 'deleted_by_user') && (typeof value === 'object' && value !== null)">

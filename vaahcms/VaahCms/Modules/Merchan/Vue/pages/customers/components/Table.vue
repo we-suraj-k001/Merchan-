@@ -55,10 +55,9 @@ const useVaah = vaah();
 
                  <template #body="prop">
                      <div class="p-inputgroup">
-                         <span class="p-inputgroup-addon cursor-pointer"
-                               v-tooltip.top="'View Channel'"
+                         <span class="p-inputgroup-addon "
                                @click="channel_store.toViewChannel(prop.data)">
-                            <b v-if="prop.data.channels_count">
+                            <b v-if="prop.data.channels_count" class="cursor-pointer" v-tooltip.top="'View Channel'">
                                 {{prop.data.channels_count}}
                             </b>
                              <b v-else="prop.data.channels_count">
