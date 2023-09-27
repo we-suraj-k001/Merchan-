@@ -354,7 +354,7 @@ class Channel extends Model
         if($query === null)
         {
             $projects = Customer::where('is_active',1)
-                ->select('id','name','slug')
+                ->select('name')
                 ->inRandomOrder()
                 ->take(10)
                 ->get();
@@ -364,7 +364,7 @@ class Channel extends Model
 
             $projects = Customer::where('is_active',1)
                 ->where('name', 'like', "%$query%")
-                ->select('id','name','slug')
+                ->select('name')
                 ->get();
         }
 

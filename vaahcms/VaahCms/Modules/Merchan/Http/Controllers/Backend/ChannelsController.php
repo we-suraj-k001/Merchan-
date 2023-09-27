@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use VaahCms\Modules\Merchan\Models\Channel;
 use WebReinvent\VaahCms\Models\TaxonomyType;
-
+use VaahCms\Modules\Merchan\Models\Customer;
 use WebReinvent\VaahCms\Models\Taxonomy;class ChannelsController extends Controller
 {
 
@@ -33,7 +33,7 @@ use WebReinvent\VaahCms\Models\Taxonomy;class ChannelsController extends Control
             $data['channel_type']= Taxonomy::getTaxonomyByType('channel-type');
             $data['fillable']['except'] = Channel::getUnFillableColumns();
             $data['empty_item'] = Channel::getEmptyItem();
-
+            $data['customers'] = Customer::where('is_active',1)->select('name','slug')->get();
             $data['actions'] = [];
 
             $response['success'] = true;

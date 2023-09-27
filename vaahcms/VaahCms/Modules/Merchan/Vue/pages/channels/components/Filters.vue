@@ -46,6 +46,23 @@ const store = useChannelStore();
 
             <VhFieldVertical >
                 <template #label>
+                    <b>Customer:</b>
+                </template>
+
+
+                <MultiSelect v-model="store.query.filter.customers" :options="store.assets.customers"
+                             filter
+                             optionLabel="name"
+                             option-value="slug"
+                             placeholder="Select Customers"
+                             class="w-full md:w-20rem" />
+
+            </VhFieldVertical>
+
+            <Divider/>
+
+            <VhFieldVertical >
+                <template #label>
                     <b>Is Active:</b>
                 </template>
 
@@ -102,25 +119,9 @@ const store = useChannelStore();
 
             </VhFieldVertical>
 
-            <Divider/>
 
-            <VhFieldVertical >
-                <template #label>
-                    <b>Customer:</b>
-                </template>
 
-                <AutoComplete name="channels-customer-filter"
-                              data-testid="channels-customer"
-                              v-model="store.selected_customers"
-                              @change = "store.addCustomers()"
-                              option-label = "name"
-                              multiple
-                              :complete-on-focus = "true"
-                              :suggestions="store.customers"
-                              @complete="store.searchCustomers"
-                              class="w-full " />
 
-            </VhFieldVertical>
 
         </Sidebar>
 

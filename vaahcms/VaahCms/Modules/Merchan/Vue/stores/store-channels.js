@@ -18,6 +18,7 @@ let empty_states = {
             is_active: null,
             trashed: null,
             sort: null,
+            customers:[],
         },
     },
     action: {
@@ -66,8 +67,7 @@ export const useChannelStore = defineStore({
         item_menu_list: [],
         item_menu_state: null,
         form_menu_list: [],
-        customers : null,
-        selected_customers : null,
+
     }),
     getters: {
 
@@ -138,6 +138,7 @@ export const useChannelStore = defineStore({
             this.$router.push({name: 'channels.form'});
             this.item.mer_customer_id = item.id;
             this.route.params.id = item.id;
+            this.query.filter.customers = [item.slug];
             this.item.customer = {
                 id: item.id,
                 name: item.name,
@@ -258,6 +259,7 @@ export const useChannelStore = defineStore({
             {
                 this.list = data;
             }
+
         },
         //---------------------------------------------------------------------
 
@@ -754,27 +756,6 @@ export const useChannelStore = defineStore({
 
         //---------------------------------------------------------------------
 
-        addCustomers() {
-
-
-            const unique_customers = [];
-            const check_names = new Set();
-
-            for (const customers of this.selected_customers) {
-                if (!check_names.has(customers.name)) {
-                    unique_customers.push(customers);
-                    check_names.add(customers.name);
-                }
-            }
-
-            this.selected_customers = unique_customers;
-            const customers_slug_set = new Set(this.selected_customers.map(item => item.slug));
-            const customers_slug_array = [...customers_slug_set];
-            this.query.filter.customers = customers_slug_array;
-
-        },
-
-        //---------------------------------------------------------------------
 
         toViewChannel(item){
 

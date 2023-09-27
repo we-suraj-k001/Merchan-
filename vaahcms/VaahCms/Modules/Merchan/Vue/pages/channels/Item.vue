@@ -110,6 +110,7 @@ const toggleItemMenu = (event) => {
 
             <div class="mt-2" v-if="store.item">
 
+                <Message severity="info" :closable="false">{{store.item.note}}</Message>
                 <Message severity="error"
                          class="p-container-message"
                          :closable="false"
@@ -139,7 +140,8 @@ const toggleItemMenu = (event) => {
                     <tbody class="p-datatable-tbody">
                     <template v-for="(value, column) in store.item ">
 
-                        <template v-if="column === 'created_by' || column === 'updated_by'">
+                        <template v-if="column === 'created_by' || column === 'updated_by' ||
+                        column === 'mer_customer_id' || column === 'note'">
                         </template>
 
                         <template v-else-if="column === 'id' || column === 'uuid'">
@@ -148,8 +150,16 @@ const toggleItemMenu = (event) => {
                                        :can_copy="true"
                             />
                         </template>
+                        <template v-else-if="column === 'customer'">
+                            <VhViewRow :label="column"
+                                       :value="value.name"
 
-                        <template v-else-if="(column === 'created_by_user' || column === 'updated_by_user'  || column === 'deleted_by_user') && (typeof value === 'object' && value !== null)">
+                            />
+
+                        </template>
+
+                        <template v-else-if="(column === 'created_by_user' || column === 'updated_by_user'
+                         || column === 'deleted_by_user') && (typeof value === 'object' && value !== null)">
                             <VhViewRow :label="column"
                                        :value="value"
                                        type="user"
