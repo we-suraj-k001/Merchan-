@@ -576,7 +576,7 @@ class Channel extends Model
     public static function updateItem($request, $id)
     {
         $inputs = $request->all();
-
+        $notes = null;
         $validation = self::validation($inputs);
         if (!$validation['success']) {
             return $validation;
@@ -604,6 +604,11 @@ class Channel extends Model
             return $response;
         }
 
+        if(isset($inputs['note']))
+        {
+            $notes = $inputs['note'];
+        }
+
         $item = self::where('id', $id)->withTrashed()->first();
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
@@ -611,18 +616,16 @@ class Channel extends Model
 
         if($item->note)
         {
-            $item->note->notes = $inputs['note'];
+
+            $item->note->notes = $notes;
             $item->note->save();
+
         }
         else{
 
-            if(isset($inputs['note']))
-            {
                 $note = new Note();
-                $note->notes = $inputs['note'];
-
+                $note->notes = $notes;
                 $item->note()->save($note);
-            }
 
         }
         $response = self::getItem($item->id);
