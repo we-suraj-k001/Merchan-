@@ -200,6 +200,13 @@ class Channel extends Model
             return $response;
         }
 
+        if(!isset($inputs['mer_customer_id']))
+        {
+            $response['success'] = false;
+            $response['errors'][] = "Customer Name is required.";
+            return $response;
+        }
+
         $item = new self();
         $item->fill($inputs);
         $item->slug = Str::slug($inputs['slug']);
@@ -320,7 +327,7 @@ class Channel extends Model
     public static function getList($request,$customer_id)
     {
 
-        $list = self::with(['customer'])
+        $list = self::with(['customer','note'])
         ->getSorted($request->filter);
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
@@ -604,6 +611,13 @@ class Channel extends Model
             return $response;
         }
 
+        if(!isset($inputs['mer_customer_id']))
+        {
+            $response['success'] = false;
+            $response['errors'][] = "Customer Name is required.";
+            return $response;
+        }
+
         if(isset($inputs['note']))
         {
             $notes = $inputs['note'];
@@ -687,15 +701,16 @@ class Channel extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
-            'url' => 'required|max:150|url',
+            'url' => 'required|max:150',
             'meta.url' => 'max:100',
             'meta.admin_api_token' => 'max:100',
             'meta.api_key' => 'max:100',
             'meta.api_secret' => 'max:100',
-            'note' => 'max:300',
+            'note' => 'max:200',
         );
 
         $validator = \Validator::make($inputs, $rules);
+
         if ($validator->fails()) {
             $messages = $validator->errors();
             $response['success'] = false;

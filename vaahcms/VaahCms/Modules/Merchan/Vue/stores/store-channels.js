@@ -18,7 +18,7 @@ let empty_states = {
             is_active: null,
             trashed: null,
             sort: null,
-            customers:null,
+            customers:[],
         },
     },
     action: {
@@ -138,7 +138,6 @@ export const useChannelStore = defineStore({
 
             this.$router.push({name: 'channels.form'});
             this.item.mer_customer_id = item.id;
-            this.route.params.id = item.id;
 
             this.item.customer = {
                 id: item.id,
@@ -760,6 +759,9 @@ export const useChannelStore = defineStore({
         //---------------------------------------------------------------------
 
         toViewChannel(item){
+
+
+
             this.$router.push({name: 'channels.index'})
             this.query.filter.customers = [item.slug];
         },

@@ -55,15 +55,25 @@ const useVaah = vaah();
 
                  <template #body="prop">
                      <div class="p-inputgroup">
-                         <span class="p-inputgroup-addon "
+                         <span v-if="prop.data.channels_count && !prop.data.deleted_at" class="p-inputgroup-addon"
                                @click="channel_store.toViewChannel(prop.data)">
-                            <b v-if="prop.data.channels_count" class="cursor-pointer" v-tooltip.top="'View Channel'">
+                            <b  class="cursor-pointer" v-tooltip.top="'View Channel'">
                                 {{prop.data.channels_count}}
                             </b>
-                             <b v-else="prop.data.channels_count">
+
+                        </span>
+
+                         <span v-else-if="prop.data.deleted_at" class="p-inputgroup-addon">
+                             <b>
+                                {{prop.data.channels_count}}
+                            </b>
+                         </span>
+                         <span v-else class="p-inputgroup-addon">
+                             <b>
                                 {{0}}
                             </b>
-                        </span>
+                         </span>
+
                          <Button icon="pi pi-plus" severity="info" v-if="!prop.data.deleted_at"
                                  size="small"
                                  v-tooltip.top="'Create Channel'"

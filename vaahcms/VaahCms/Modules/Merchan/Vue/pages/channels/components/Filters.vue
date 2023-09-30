@@ -53,7 +53,7 @@ const store = useChannelStore();
                 <MultiSelect v-model="store.query.filter.customers" :options="store.assets.customers"
                              filter
                              optionLabel="name"
-                             option-value="slug"
+                             optionValue="slug"
                              placeholder="Select Customers"
                              class="w-full md:w-20rem" />
 

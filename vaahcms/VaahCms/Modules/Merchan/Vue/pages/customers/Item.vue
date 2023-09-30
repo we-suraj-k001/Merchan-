@@ -109,7 +109,7 @@ const toggleItemMenu = (event) => {
 
 
             <div class="mt-2" v-if="store.item">
-                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note}}</Message>
+                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note.notes}}</Message>
                 <Message severity="error"
                          class="p-container-message"
                          :closable="false"

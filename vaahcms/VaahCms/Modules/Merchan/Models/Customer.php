@@ -640,10 +640,10 @@ class Customer extends Model
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
             'email' => 'required|max:100|email',
-            'note' => 'max:300'
+            'note' => 'max:200'
         );
 
-        
+
         $validator = \Validator::make($inputs, $rules);
         if ($validator->fails()) {
             $messages = $validator->errors();
