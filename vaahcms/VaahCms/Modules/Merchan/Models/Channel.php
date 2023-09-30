@@ -687,8 +687,8 @@ class Channel extends Model
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
-            'url' => 'required|max:150',
-            'meta.url' => 'max:100',
+            'url' => 'required|max:150|url',
+            'meta.url' => 'max:100|url',
             'meta.admin_api_token' => 'max:100',
             'meta.api_key' => 'max:100',
             'meta.api_secret' => 'max:100'

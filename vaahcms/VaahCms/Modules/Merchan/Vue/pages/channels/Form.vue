@@ -231,5 +231,8 @@ const toggleFormMenu = (event) => {
 
 </template>
 <style scoped>
-
+.p-fieldset, .p-fieldset .fieldset-legend
+{
+    border-color:white;
+}
 </style>
