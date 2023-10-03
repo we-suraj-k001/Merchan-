@@ -238,7 +238,7 @@ export const useCustomerStore = defineStore({
             if(data)
             {
                 this.item = data;
-                this.item.note = data.note.notes;
+                this.item.notes = data.note.notes;
             }else{
                 this.$router.push({name: 'customers.index'});
             }
@@ -420,7 +420,7 @@ export const useCustomerStore = defineStore({
                 this.item = data;
                 if(data.note)
                 {
-                    this.item.note = data.note.notes;
+                    this.item.notes = data.note.notes;
                 }
 
                 await this.getList();

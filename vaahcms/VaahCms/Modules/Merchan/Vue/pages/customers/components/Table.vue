@@ -34,7 +34,7 @@ const useVaah = vaah();
                     <Badge v-if="prop.data.deleted_at"
                            value="Trashed"
                            severity="danger"></Badge>
-                    {{prop.data.name}}
+                    {{prop.data.name.length < 30 ? prop.data.name : prop.data.name.substring(0,30) + "..."}}
                 </template>
 
             </Column>
@@ -109,12 +109,16 @@ const useVaah = vaah();
 
                         <Button class="p-button-tiny p-button-text"
                                 data-testid="customers-table-to-view"
+                                :disabled="$route.path.includes('view')
+                                && prop.data.id === store.item.id"
                                 v-tooltip.top="'View'"
                                 @click="store.toView(prop.data)"
                                 icon="pi pi-eye" />
 
                         <Button class="p-button-tiny p-button-text"
                                 data-testid="customers-table-to-edit"
+                                :disabled="$route.path.includes('form')
+                                && prop.data.id === store.item.id"
                                 v-tooltip.top="'Update'"
                                 @click="store.toEdit(prop.data)"
                                 icon="pi pi-pencil" />

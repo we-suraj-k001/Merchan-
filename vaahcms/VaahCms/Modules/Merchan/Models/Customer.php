@@ -206,10 +206,10 @@ class Customer extends Model
         $item->slug = Str::slug($inputs['slug']);
         $item->save();
 
-        if(isset($inputs['note']))
+        if(isset($inputs['notes']))
         {
             $note = new Note();
-            $note->notes = $inputs['note'];
+            $note->notes = $inputs['notes'];
 
             $item->note()->save($note);
         }
@@ -562,17 +562,17 @@ class Customer extends Model
 
         if($item->note)
         {
-            $item->note->notes = $inputs['note'];
+            $item->note->notes = $inputs['notes'];
             $item->note->save();
         }
 
         else
         {
 
-            if(isset($inputs['note']))
+            if(isset($inputs['notes']))
             {
                 $note = new Note();
-                $note->notes = $inputs['note'];
+                $note->notes = $inputs['notes'];
                 $item->note()->save($note);
             }
 

@@ -213,10 +213,10 @@ class Channel extends Model
         $item->meta = json_encode($inputs['meta']);
         $item->save();
 
-        if(isset($inputs['note']))
+        if(isset($inputs['notes']))
         {
             $note = new Note();
-            $note->notes = $inputs['note'];
+            $note->notes = $inputs['notes'];
             $item->note()->save($note);
         }
 
@@ -618,9 +618,9 @@ class Channel extends Model
             return $response;
         }
 
-        if(isset($inputs['note']))
+        if(isset($inputs['notes']))
         {
-            $notes = $inputs['note'];
+            $notes = $inputs['notes'];
         }
 
         $item = self::where('id', $id)->withTrashed()->first();

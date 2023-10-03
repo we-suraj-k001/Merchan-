@@ -213,7 +213,7 @@ const toggleFormMenu = (event) => {
                     <Textarea class="w-full"
                               name="customers-notes"
                               data-testid="customers-notes"
-                              v-model="store.item.note"/>
+                              v-model="store.item.notes"/>
                 </VhField>
 
                 <VhField label="Is Active">

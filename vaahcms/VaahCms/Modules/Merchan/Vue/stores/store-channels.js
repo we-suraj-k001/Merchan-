@@ -280,7 +280,7 @@ export const useChannelStore = defineStore({
             if(data)
             {
                 this.item = data;
-                this.item.note = data.note.notes;
+                this.item.notes = data.note.notes;
             }else{
                 this.$router.push({name: 'channels.index'});
             }
@@ -461,7 +461,7 @@ export const useChannelStore = defineStore({
                 this.item = data;
                 if(data.note)
                 {
-                    this.item.note = data.note.notes;
+                    this.item.notes = data.note.notes;
                 }
                 await this.getList();
                 await this.formActionAfter();

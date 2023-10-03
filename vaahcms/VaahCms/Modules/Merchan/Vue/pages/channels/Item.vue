@@ -110,7 +110,7 @@ const toggleItemMenu = (event) => {
 
             <div class="mt-2" v-if="store.item">
 
-                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note}}</Message>
+                <Message severity="info" :closable="false" v-if="store.item.note">{{store.item.note.notes}}</Message>
                 <Message severity="error"
                          class="p-container-message"
                          :closable="false"
@@ -141,7 +141,7 @@ const toggleItemMenu = (event) => {
                     <template v-for="(value, column) in store.item ">
 
                         <template v-if="column === 'created_by' || column === 'updated_by' ||
-                        column === 'mer_customer_id' || column === 'note'">
+                        column === 'mer_customer_id' || column === 'note' || column === 'notes'">
                         </template>
 
                         <template v-else-if="column == 'meta'">

@@ -139,7 +139,8 @@ const toggleItemMenu = (event) => {
                     <tbody class="p-datatable-tbody">
                     <template v-for="(value, column) in store.item ">
 
-                        <template v-if="column === 'created_by' || column === 'updated_by' || column === 'note' || column === 'meta'">
+                        <template v-if="column === 'created_by' || column === 'updated_by' || column === 'note' ||
+                         column === 'meta' || column === 'notes' ">
                         </template>
 
                         <template v-else-if="column === 'id' || column === 'uuid'">
@@ -147,6 +148,28 @@ const toggleItemMenu = (event) => {
                                        :value="value"
                                        :can_copy="true"
                             />
+                        </template>
+                        <template v-else-if="column === 'name'">
+                            <tr>
+                                <td :style="{width: label_width}">
+                                    <b>Name</b>
+                                </td>
+                                <td  colspan="2" >
+                                    <div class="word-overflow">
+                                        {{store.item.name}}</div>
+                                </td>
+                            </tr>
+                        </template>
+                        <template v-else-if="column === 'slug'">
+                            <tr>
+                                <td :style="{width: label_width}">
+                                    <b>Slug</b>
+                                </td>
+                                <td  colspan="2" >
+                                    <div class="word-overflow">
+                                        {{store.item.slug}}</div>
+                                </td>
+                            </tr>
                         </template>
 
                         <template v-else-if="column == 'channels_count'">
@@ -195,3 +218,11 @@ const toggleItemMenu = (event) => {
     </div>
 
 </template>
+<style scoped>
+.word-overflow
+{
+    width:300px;
+    overflow-wrap: break-word;
+    word-wrap:break-word;
+}
+</style>
