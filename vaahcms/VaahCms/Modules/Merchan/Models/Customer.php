@@ -640,7 +640,7 @@ class Customer extends Model
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
             'email' => 'required|max:100|email',
-            'note' => 'max:200'
+            'notes' => 'max:200'
         );
 
 

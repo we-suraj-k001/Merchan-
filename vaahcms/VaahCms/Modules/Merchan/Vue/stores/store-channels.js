@@ -136,7 +136,7 @@ export const useChannelStore = defineStore({
         async toCreateChannel(item){
 
 
-            this.$router.push({name: 'channels.form'});
+            await this.$router.push({name: 'channels.form'});
             this.item.mer_customer_id = item.id;
 
             this.item.customer = {
@@ -758,11 +758,11 @@ export const useChannelStore = defineStore({
 
         //---------------------------------------------------------------------
 
-        toViewChannel(item){
+        async toViewChannel(item){
 
 
 
-            this.$router.push({name: 'channels.index'})
+            await getList();
             this.query.filter.customers = [item.slug];
         },
 

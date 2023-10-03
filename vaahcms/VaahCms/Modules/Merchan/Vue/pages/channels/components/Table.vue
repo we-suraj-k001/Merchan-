@@ -42,7 +42,8 @@ const useVaah = vaah();
                      :sortable="true">
 
                  <template #body="prop">
-                     <b v-if="prop.data.customer">{{prop.data.customer.name}}</b>
+                     <b v-if="prop.data.customer">{{prop.data.customer.name.length < 20
+                         ? prop.data.customer.name : prop.data.customer.name.substring(0,20) + "..."}}</b>
                  </template>
 
              </Column>

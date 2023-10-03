@@ -706,7 +706,7 @@ class Channel extends Model
             'meta.admin_api_token' => 'max:100',
             'meta.api_key' => 'max:100',
             'meta.api_secret' => 'max:100',
-            'note' => 'max:200',
+            'notes' => 'max:200',
         );
 
         $validator = \Validator::make($inputs, $rules);
